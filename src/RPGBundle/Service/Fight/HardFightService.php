@@ -38,10 +38,9 @@ class HardFightService extends AbstractFightService
             } else {
                 $fight->setStatus(self::STATUS_FIGHT_WIN);
             }
-            $this->entityManager->persist($fight);
-            $this->entityManager->flush($fight);
         } else if ($action == self::FIGHT_ACTION_SKIP) {
             $patch->increaseLife(-2);
+            $fight->setStatus(self::STATUS_FIGHT_LEAVE);
         }
 
         return $patch;

@@ -2,7 +2,6 @@
 
 namespace RPGBundle\Controller\Api;
 
-use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -10,7 +9,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use RPGBundle\Exception\UserException;
 use RPGBundle\Model\Error;
 use RPGBundle\Model\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\Route;
 
@@ -21,7 +19,6 @@ class FightController extends FOSRestController
 {
     /**
      * @Post("/secure/fight")
-     * @Get("/secure/fight")
      * @QueryParam(name="user", requirements="\d+", description="User id")
      * @QueryParam(name="fight", requirements="\d+", description="Fight id")
      * @QueryParam(name="action", requirements="\w+", description="action")
@@ -32,7 +29,7 @@ class FightController extends FOSRestController
      *     description="Fight related api"
      * )
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
     public function step(Request $request)
     {

@@ -43,36 +43,29 @@ abstract class AbstractEvent implements EventInterface
 
     public function apply(User $user, Fight $fight = null)
     {
-        $this->entityManager->getConnection()->beginTransaction();
-        try {
-            $event = new Event();
-            $event->setLife($this->patch->life)
-                ->setHitMax($this->patch->hitMax)
-                ->setHitMin($this->patch->hitMin)
-                ->setEventType($this->name)
-                ->setUser($user)
-                ->setFight($fight)
-            ;
+        $this->logEvent($user, $fight);
 
-            $user->setHitMax($user->getHitMax() + $this->patch->hitMax);
-            $user->setHitMin($user->getHitMin() + $this->patch->hitMin);
-            $user->setLife($user->getLife() + $this->patch->life);
-
-            $this->entityManager->persist($event);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-
-            $this->entityManager->getConnection()->commit();
-        } catch (\Exception $e) {
-            $this->entityManager->getConnection()->rollBack();
-            throw $e;
-        }
+        $user->setHitMax($user->getHitMax() + $this->patch->hitMax);
+        $user->setHitMin($user->getHitMin() + $this->patch->hitMin);
+        $user->setLife($user->getLife() + $this->patch->life);
 
 
         return $user;
     }
 
+    public function logEvent(User $user, Fight $fight = null)
+    {
+        $event = new Event();
+        $event->setLife($this->patch->life)
+            ->setHitMax($this->patch->hitMax)
+            ->setHitMin($this->patch->hitMin)
+            ->setEventType($this->name)
+            ->setUser($user)
+            ->setFight($fight)
+        ;
 
+        $this->entityManager->persist($event);
+    }
 
     /**
      * @return mixed

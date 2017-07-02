@@ -9,7 +9,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use RPGBundle\Exception\UserException;
 use RPGBundle\Model\Error;
 use RPGBundle\Model\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -30,7 +29,7 @@ class UserController extends FOSRestController
      *     description="User related api"
      * )
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
     public function create(Request $request)
     {
@@ -64,8 +63,8 @@ class UserController extends FOSRestController
      *     description="User related api"
      * )
      * @param Request $request
-     * @param integer $id
-     * @return JsonResponse
+     * @param $user
+     * @return Response
      */
     public function getUserData(Request $request, $user)
     {
@@ -95,7 +94,7 @@ class UserController extends FOSRestController
      *     description="Roles of user"
      * )
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
     public function getRoles(Request $request)
     {
@@ -127,8 +126,7 @@ class UserController extends FOSRestController
      *     description="User related api"
      * )
      * @param Request $request
-     * @param integer $id
-     * @return JsonResponse
+     * @return Response
      */
     public function auth(Request $request)
     {
@@ -149,7 +147,6 @@ class UserController extends FOSRestController
 
             return $response;
         } catch (\Exception $e) {
-            echo $e->getMessage();exit;
             $error = new Error();
             $response = new Response(null, false, $error, 500);
 

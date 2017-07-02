@@ -7,6 +7,7 @@ use RPGBundle\Entity\Fight;
 use RPGBundle\Entity\User;
 use RPGBundle\Event\FightEvent;
 use RPGBundle\Service\EventFactory;
+use RPGBundle\Service\EventGenerator;
 use RPGBundle\Service\ExploreService;
 use RPGBundle\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -30,6 +31,7 @@ class SimpleFightServiceTest extends KernelTestCase
     }
     public function testStepWithActualFight()
     {
+        $eventGenerator = $this->createMock(EventGenerator::class);
         $user = $this->createMock(User::class);
         $fight = $this->createMock(Fight::class);
         $entityManager = $this->createMock(EntityManager::class);
@@ -57,7 +59,7 @@ class SimpleFightServiceTest extends KernelTestCase
             ->method('create')
             ->will($this->returnValue($actualFightEvent));
 
-        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, []);
+        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, $eventGenerator);
         $returnValue = $exploreService->step(1);
         $this->assertEquals($actualFightEvent, $returnValue);
     }

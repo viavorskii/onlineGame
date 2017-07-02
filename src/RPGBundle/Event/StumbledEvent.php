@@ -10,8 +10,6 @@ use RPGBundle\Model\Patch;
  */
 class StumbledEvent extends AbstractEvent
 {
-    const NAME = 'stumbled';
-
     public function run(User $user)
     {
         $value = (-1) * rand(1,5);
@@ -22,6 +20,9 @@ class StumbledEvent extends AbstractEvent
 
         $this->setPatch($patch);
         $this->apply($user);
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         return $this;
     }

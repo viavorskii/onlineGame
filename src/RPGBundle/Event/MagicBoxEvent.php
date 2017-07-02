@@ -21,6 +21,8 @@ class MagicBoxEvent extends AbstractEvent
         $this->setPatch($patch);
         $this->apply($user);
 
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         return $this;
     }
 }

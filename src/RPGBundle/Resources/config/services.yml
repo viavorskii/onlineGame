@@ -10,6 +10,11 @@ services:
         - "@doctrine.orm.entity_manager"
         - "@rpg.user"
         - "@rpg.event_factory"
+        - "@rpg.event.generator"
+
+    rpg.event.generator:
+      class: RPGBundle\Service\EventGenerator
+      arguments:
         -
             simple_fight: 2
             hard_fight: 2

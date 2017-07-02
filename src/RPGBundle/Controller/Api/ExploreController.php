@@ -2,7 +2,6 @@
 
 namespace RPGBundle\Controller\Api;
 
-use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\Route;
@@ -11,7 +10,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use RPGBundle\Exception\UserException;
 use RPGBundle\Model\Error;
 use RPGBundle\Model\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,7 +19,6 @@ class ExploreController extends FOSRestController
 {
     /**
      * @Post("/secure/step")
-     * @Get("/secure/step")
      * @QueryParam(name="user", requirements="\d+", description="User id")
      * @QueryParam(name="apikey",  description="Api key")
      *
@@ -30,7 +27,7 @@ class ExploreController extends FOSRestController
      *     description="Explore related api"
      * )
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
     public function step(Request $request)
     {

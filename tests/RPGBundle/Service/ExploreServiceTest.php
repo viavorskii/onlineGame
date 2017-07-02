@@ -8,6 +8,7 @@ use RPGBundle\Entity\User;
 use RPGBundle\Event\FightEvent;
 use RPGBundle\Repository\FightRepository;
 use RPGBundle\Service\EventFactory;
+use RPGBundle\Service\EventGenerator;
 use RPGBundle\Service\ExploreService;
 use RPGBundle\Service\Fight\SimpleFightService;
 use RPGBundle\Service\UserService;
@@ -35,6 +36,7 @@ class ExploreServiceTest extends KernelTestCase
         $user = $this->createMock(User::class);
         $fight = $this->createMock(Fight::class);
         $entityManager = $this->createMock(EntityManager::class);
+        $eventGenerator = $this->createMock(EventGenerator::class);
         $actualFightEvent = $this->createMock(FightEvent::class);
 
         $userService = $this
@@ -59,7 +61,7 @@ class ExploreServiceTest extends KernelTestCase
             ->method('create')
             ->will($this->returnValue($actualFightEvent));
 
-        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, []);
+        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, $eventGenerator);
         $returnValue = $exploreService->step(1);
         $this->assertEquals($actualFightEvent, $returnValue);
     }
@@ -68,7 +70,6 @@ class ExploreServiceTest extends KernelTestCase
     {
         $user = $this->createMock(User::class);
         $entityManager = $this->createMock(EntityManager::class);
-
         $userService = $this
             ->getMockBuilder(UserService::class)
             ->disableOriginalConstructor()
@@ -90,6 +91,15 @@ class ExploreServiceTest extends KernelTestCase
             ->method("run")
             ->will($this->returnValue($fightEvent));
 
+        $eventGenerator = $this
+            ->getMockBuilder(EventGenerator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $eventGenerator->expects($this->once())
+            ->method("generateRandomEvent")
+            ->will($this->returnValue("simple_fight"));
+
         $eventFactory = $this
             ->getMockBuilder(EventFactory::class)
             ->disableOriginalConstructor()
@@ -99,7 +109,7 @@ class ExploreServiceTest extends KernelTestCase
             ->method('create')
             ->will($this->returnValue($fightEvent));
 
-        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, []);
+        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, $eventGenerator);
         $returnValue = $exploreService->step(1);
 
         $this->assertEquals($fightEvent, $returnValue);
@@ -107,6 +117,7 @@ class ExploreServiceTest extends KernelTestCase
 
     public function testFight()
     {
+        $eventGenerator = $this->createMock(EventGenerator::class);
         $user = $this->createMock(User::class);
         $fight = $this->createMock(Fight::class);
         $fightEvent = $this->createMock(FightEvent::class);
@@ -145,7 +156,7 @@ class ExploreServiceTest extends KernelTestCase
             ->method('createFightEvent')
             ->will($this->returnValue($fightEvent));
 
-        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, []);
+        $exploreService = new ExploreService($entityManager, $userService, $eventFactory, $eventGenerator);
         $return = $exploreService->fight(1, 1, SimpleFightService::FIGHT_ACTION_FIGHT);
 
         $this->assertEquals($fightEvent, $return);

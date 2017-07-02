@@ -14,11 +14,6 @@ use RPGBundle\Service\Fight\AbstractFightService;
 class ExploreService
 {
     /**
-     * @var array
-     */
-    private $eventProbabilities = [];
-
-    /**
      * @var EntityManager
      */
     private $entityManager;
@@ -31,13 +26,17 @@ class ExploreService
      * @var EventFactory
      */
     private $eventFactory;
+    /**
+     * @var EventGenerator
+     */
+    private $eventGenerator;
 
-    public function __construct(EntityManager $entityManager, UserService $userService, EventFactory $eventFactory, $eventProbabilities)
+    public function __construct(EntityManager $entityManager, UserService $userService, EventFactory $eventFactory, EventGenerator $eventGenerator)
     {
         $this->entityManager = $entityManager;
         $this->userService = $userService;
         $this->eventFactory = $eventFactory;
-        $this->eventProbabilities = $eventProbabilities;
+        $this->eventGenerator = $eventGenerator;
     }
 
     public function step($userId) : AbstractEvent
@@ -53,7 +52,7 @@ class ExploreService
             $event = $this->eventFactory->create($actualFight->getType());
             $event->setContent($actualFight);
         } else {
-            $happened = $this->generateRandomEvent();
+            $happened = $this->eventGenerator->generateRandomEvent();
             $event = $this->eventFactory->create($happened);
             $event = $event->run($user);
         }
@@ -73,7 +72,7 @@ class ExploreService
             throw new UserException("Fight is not found");
         }
         $event = $this->eventFactory->createFightEvent($fight->getType());
-        if ($fight->getStatus() == AbstractFightService::STATUS_FIGHT_WAIT) {
+        if ($fight->getStatus() === AbstractFightService::STATUS_FIGHT_WAIT) {
             $event->process($user, $fight, $action);
         }
 
@@ -81,12 +80,5 @@ class ExploreService
         return $event;
     }
 
-    private function generateRandomEvent() : string
-    {
-        $eventProbability = [];
-        foreach ($this->eventProbabilities as $event => $probability) {
-            $eventProbability = array_merge(array_fill(0, $probability, $event), $eventProbability);
-        }
-        return count($eventProbability) ? $eventProbability[rand(0, count($eventProbability) -1)] : "default";
-    }
+
 }

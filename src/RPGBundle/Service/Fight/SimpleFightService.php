@@ -43,9 +43,6 @@ class SimpleFightService extends AbstractFightService
             $fight->setStatus(self::STATUS_FIGHT_LEAVE);
         }
 
-        $this->entityManager->persist($fight);
-        $this->entityManager->flush($fight);
-
         return $patch;
 
     }
