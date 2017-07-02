@@ -11,8 +11,8 @@ services:
         - "@rpg.user"
         - "@rpg.event_factory"
         -
-            simple_fight: 1
-            hard_fight: 1
+            simple_fight: 2
+            hard_fight: 2
             magic_box: 10
 
 
