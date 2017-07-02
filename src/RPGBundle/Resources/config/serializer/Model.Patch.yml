@@ -1,0 +1,18 @@
+RPGBundle\Model\Patch:
+  exclusion_policy: ALL
+  properties:
+    life:
+      expose: true
+      serialized_name: "life"
+      type: string
+      groups: ["external"]
+    hitMax:
+      expose: true
+      serialized_name: "hitMax"
+      type: string
+      groups: ["external"]
+    hitMin:
+      expose: true
+      serialized_name: "hitMin"
+      type: string
+      groups: ["external"]

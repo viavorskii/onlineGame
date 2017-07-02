@@ -1,0 +1,38 @@
+RPGBundle\Entity\User:
+  exclusion_policy: ALL
+  properties:
+    id:
+      expose: true
+      serialized_name: "id"
+      type: integer
+      groups: ["external"]
+    name:
+      expose: true
+      serialized_name: "name"
+      type: string
+      groups: ["external"]
+    role:
+      expose: true
+      serialized_name: "role"
+      type: RPGBundle\Entity\Role
+      groups: ["external"]
+    hitMin:
+      expose: true
+      serialized_name: "hitMin"
+      type: integer
+      groups: ["external"]
+    hitMax:
+      expose: true
+      serialized_name: "hitMax"
+      type: integer
+      groups: ["external"]
+    life:
+      expose: true
+      serialized_name: "life"
+      type: integer
+      groups: ["external"]
+    secretKey:
+      expose: true
+      serialized_name: "apiKey"
+      type: string
+      groups: ["external"]

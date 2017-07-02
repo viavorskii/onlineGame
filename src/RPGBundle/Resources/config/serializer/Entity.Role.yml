@@ -1,0 +1,13 @@
+RPGBundle\Entity\Role:
+  exclusion_policy: ALL
+  properties:
+    id:
+      expose: true
+      serialized_name: "id"
+      type: integer
+      groups: ["external"]
+    name:
+      expose: true
+      serialized_name: "name"
+      type: string
+      groups: ["external"]

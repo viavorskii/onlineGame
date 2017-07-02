@@ -1,0 +1,22 @@
+RPGBundle\Model\Response:
+  exclusion_policy: ALL
+  properties:
+    success:
+      expose: true
+      serialized_name: "success"
+      type: boolean
+      groups: ["external"]
+    code:
+      expose: true
+      serialized_name: "code"
+      type: integer
+      groups: ["external"]
+    content:
+      expose: true
+      serialized_name: "content"
+      groups: ["external"]
+    error:
+      expose: true
+      serialized_name: "error"
+      type: RPGBundle\Model\Error
+      groups: ["external"]

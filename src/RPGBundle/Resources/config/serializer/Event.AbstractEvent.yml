@@ -1,0 +1,17 @@
+RPGBundle\Event\AbstractEvent:
+  exclusion_policy: ALL
+  properties:
+    name:
+      expose: true
+      serialized_name: "name"
+      type: string
+      groups: ["external"]
+    patch:
+      expose: true
+      serialized_name: "patch"
+      type: RPGBundle\Model\Patch
+      groups: ["external"]
+    content:
+      expose: true
+      serialized_name: "content"
+      groups: ["external"]

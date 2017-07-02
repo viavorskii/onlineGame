@@ -1,0 +1,18 @@
+RPGBundle\Entity\Fight:
+  exclusion_policy: ALL
+  properties:
+    id:
+      expose: true
+      serialized_name: "id"
+      type: integer
+      groups: ["external"]
+    status:
+      expose: true
+      serialized_name: "status"
+      type: integer
+      groups: ["external"]
+    monster:
+      expose: true
+      serialized_name: "monster"
+      type: RPGBundle\Entity\Monster
+      groups: ["external"]

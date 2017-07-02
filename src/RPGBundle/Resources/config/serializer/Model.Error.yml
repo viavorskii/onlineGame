@@ -1,0 +1,8 @@
+RPGBundle\Model\Error:
+  exclusion_policy: ALL
+  properties:
+    message:
+      expose: true
+      serialized_name: "message"
+      type: string
+      groups: ["external"]

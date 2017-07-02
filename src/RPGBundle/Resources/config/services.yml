@@ -1,0 +1,86 @@
+services:
+    rpg.user:
+      class: RPGBundle\Service\UserService
+      arguments:
+        - "@doctrine.orm.entity_manager"
+
+    rpg.explore:
+      class: RPGBundle\Service\ExploreService
+      arguments:
+        - "@doctrine.orm.entity_manager"
+        - "@rpg.user"
+        - "@rpg.event_factory"
+        -
+            simple_fight: 1
+            hard_fight: 1
+            magic_box: 10
+
+
+    rgp.security.user.provider:
+      class: RPGBundle\Security\ApiKeyUserProvider
+      autowire: true
+
+    rgp.security.authenticator:
+      class: RPGBundle\Security\ApiKeyAuthenticator
+      autowire: true
+
+    default_controller:
+      class: RPGBundle\Controller\DefaultController
+      autowire: true
+
+    test_command:
+      class: RPGBundle\Command\TestCommand
+      tags:
+        - {name: console.command}
+
+    rpg.event_factory:
+      class: RPGBundle\Service\EventFactory
+      arguments:
+          -
+              default: '@rpg.event.blank'
+              "%simple_fight%" : '@rpg.event.simple_fight'
+              "%hard_fight%" : '@rpg.event.hard_fight'
+              "%magic_box%" : '@rpg.event.magic_box'
+
+    rpg.event.simple_fight:
+      class: RPGBundle\Event\FightEvent
+      arguments:
+        - "%simple_fight%"
+        - "@doctrine.orm.entity_manager"
+        - "@rpg.simple_fight"
+
+    rpg.event.hard_fight:
+      class: RPGBundle\Event\FightEvent
+      arguments:
+        - "%hard_fight%"
+        - "@doctrine.orm.entity_manager"
+        - "@rpg.hard_fight"
+
+    rpg.simple_fight:
+      class: RPGBundle\Service\Fight\SimpleFightService
+      arguments:
+        - "%simple_fight%"
+        - "@doctrine.orm.entity_manager"
+
+    rpg.hard_fight:
+      class: RPGBundle\Service\Fight\HardFightService
+      arguments:
+        - "%hard_fight%"
+        - "@doctrine.orm.entity_manager"
+
+    rpg.event.magic_box:
+      class: RPGBundle\Event\MagicBoxEvent
+      arguments:
+        - "%magic_box%"
+        - "@doctrine.orm.entity_manager"
+
+    rpg.event.blank:
+      class: RPGBundle\Event\BlankEvent
+      arguments:
+        - "%blank%"
+        - "@doctrine.orm.entity_manager"
+parameters:
+  simple_fight: "simple_fight"
+  hard_fight: 'hard_fight'
+  magic_box: 'magic_box'
+  blank: 'blank'

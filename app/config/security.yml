@@ -1,0 +1,14 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    providers:
+        api_key_user_provider:
+            id: "rgp.security.user.provider"
+
+    firewalls:
+        main:
+            pattern: ^/api/secure
+            stateless: true
+            simple_preauth:
+                authenticator: "rgp.security.authenticator"
+            provider: api_key_user_provider
